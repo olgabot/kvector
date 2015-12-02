@@ -60,8 +60,7 @@ def create_metadata(motifs):
                               'Motif Statistics']
     return motif_metadata
 
-def motifs_to_kmer_vectors(motifs, residues):
-    kmer_lengths = motifs['Consensus Sequence'].map(len).unique()
+def motifs_to_kmer_vectors(motifs, residues, kmer_lengths):
     kmers = make_kmers(kmer_lengths, residues)
     kmers_list = map(list, kmers)
 
