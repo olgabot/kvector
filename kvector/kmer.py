@@ -44,7 +44,7 @@ def score_kmers(pwm, kmers):
 
 def count_kmers(filename, kmer_lengths=(4, 5, 6), format='fasta',
                 residues=DNA):
-    """Observe the number of substrings of specific lengths in the fasta file
+    """Observe the number of substrings of specific lengths in sequence file
 
     A k-mer is a DNA (or RNA!) "word" of a specific length "k".
 
