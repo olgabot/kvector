@@ -31,7 +31,7 @@ def homer_motif_reader(handle, residues=DNA):
 
 
 
-def read_motifs(filename, residues):
+def read_motifs(filename, residues=DNA):
     """Wrapper to read a homer motif file
 
     Parameters
@@ -51,9 +51,9 @@ def read_motifs(filename, residues):
     return motifs
 
 
-def motifs_to_kmer_vectors(motifs, residues, kmer_lengths):
+def motifs_to_kmer_vectors(motifs, kmer_lengths, residues=DNA):
     kmers = make_kmers(kmer_lengths, residues)
-    kmers_list = map(list, kmers)
+    kmers_list = list(map(list, kmers))
 
     motif_scores = motifs.map(
         lambda x: pd.Series(score_kmers(x, kmers_list), index=kmers))
