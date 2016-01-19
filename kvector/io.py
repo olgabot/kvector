@@ -50,15 +50,6 @@ def read_motifs(filename, residues):
         motifs = pd.Series(dict(homer_motif_reader(f, residues=residues)))
     return motifs
 
-def create_metadata(motifs):
-    motif_metadata = pd.DataFrame.from_records(
-        motifs.index.map(lambda x: pd.Series(x.split())))
-
-    motif_metadata.columns = ['Consensus Sequence', 'Motif ID',
-                              'Log Odds Threshold', '$\log(p)$',
-                              'empty_placeholder', 'Occurence Information',
-                              'Motif Statistics']
-    return motif_metadata
 
 def motifs_to_kmer_vectors(motifs, residues, kmer_lengths):
     kmers = make_kmers(kmer_lengths, residues)
