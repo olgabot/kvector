@@ -20,13 +20,23 @@ To install this code, clone this github repository and use `pip` to install
 
 ## Features
 
+Check out [this notebook](https://github.com/olgabot/kvector/blob/master/overview.ipynb)
+for an overview of features with both inputs and outputs (below shows only inputs)
+
+### Count *k*-mers in a fasta file
+
+```python
+kmer_vector = kvector.count_kmers('kvector/tests/data/example.fasta', kmer_lengths=(3, 4))
+kmer_vector.head()
+```
+
 ### Read HOMER motif file
 
 ```python
 motifs = kvector.read_motifs("kvector/tests/example.motifs", residues='ACGT')
 ```
 
-The output is a pandas Series of the motif ids from the file, mapped to a 
+The output is a pandas Series of the motif ids from the file, mapped to a
 dataframe of the position-weight matrix of the motif.
 
 ### Create metadata matrix from the ID lines of the motifs
@@ -37,11 +47,11 @@ metadata = kvector.create_metadata(motifs)
 
 ### Transform the motif PWM to a kmer vector
 
-Keep in mind that on most computers, only kmers up to about 8 (4^8 = 65,536) 
-can be stored in memory. You may want to do this on a supercomputer and not 
-just your laptop. 
+Keep in mind that on most computers, only kmers up to about 8 (4^8 = 65,536)
+can be stored in memory. You may want to do this on a supercomputer and not
+just your laptop.
 
 ```python
-motif_kmer_vectors = kvector.motifs_to_kmer_vectors(motifs, residues='ACGT', 
+motif_kmer_vectors = kvector.motifs_to_kmer_vectors(motifs, residues='ACGT',
     kmer_lengths=(4, 5, 6))
 ```
