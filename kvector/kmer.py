@@ -65,6 +65,8 @@ def count_kmers(filename, kmer_lengths=(4, 5, 6), format='fasta',
     kmer_matrix : pandas.DataFrame
         A (kmers, sequences) dataframe of the kmers observed
     """
+    if isinstance(kmer_lengths, int):
+        kmer_lengths = [kmer_lengths]
     kmers = make_kmers(kmer_lengths, residues=residues)
 
     with open(filename) as f:
@@ -105,4 +107,4 @@ def make_kmers(kmer_lengths, residues=DNA):
     except TypeError:
         # Kmer length is only one number
         return list(map(lambda x: ''.join(x), itertools.product(
-            residues, repeat=k)))
+            residues, repeat=kmer_lengths)))
