@@ -16,12 +16,13 @@ def score_kmers(pwm, kmers):
     pwm : pandas.DataFrame
         A (length, 4) dataframe of the weight of each position's probability
         of each nucleotide
-    kmers : list of list
-        A list of kmers strings as lists, e.g. [['G', 'G', 'G', 'G', 'G', 'G']]
+    kmers : list of str
+        A list of kmers strings, e.g. ['AAA', 'AAC', 'AAG']
 
     """
     motif_length = pwm.shape[0]
-    for kmer in kmers:
+
+    for kmer in map(list, kmers):
         k = len(kmer)
 
         divisor = min(k, motif_length)

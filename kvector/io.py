@@ -53,10 +53,9 @@ def read_motifs(filename, residues=DNA):
 
 def motifs_to_kmer_vectors(motifs, kmer_lengths, residues=DNA):
     kmers = make_kmers(kmer_lengths, residues)
-    kmers_list = list(map(list, kmers))
 
     motif_scores = motifs.map(
-        lambda x: pd.Series(score_kmers(x, kmers_list), index=kmers))
+        lambda x: pd.Series(score_kmers(x, kmers), index=kmers))
     motif_scores = pd.DataFrame.from_records(motif_scores).T
     motif_scores.columns = motifs.index
     return motif_scores

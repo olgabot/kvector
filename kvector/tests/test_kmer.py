@@ -18,6 +18,21 @@ import six
 def fasta(data_folder):
     return '{}/example.fasta'.format(data_folder)
 
+
+@pytest.fixture
+def pwm():
+    s = ''',A,C,G,T
+    0,0.39532879396435,0.105513888686126,0.105513888686126,0.39364342774540506
+    1,0.00770456803068082,0.00770456803068082,0.00770456803068082,0.976886297348457
+    2,0.976886297348457,0.00770456803068082,0.00770456803068082,0.00770456803068082
+    3,0.976886297348457,0.00770456803068082,0.00770456803068082,0.00770456803068082
+    4,0.00770456803068082,0.00770456803068082,0.00770456803068082,0.976886297348457
+    5,0.00770456803068082,0.00770456803068082,0.00770456803068082,0.976886297348457
+    6,0.321131137484576,0.14380369811499302,0.478370946765367,0.0566942181612342
+    '''
+    return pd.read_csv(six.StringIO(s), index_col=0)
+
+
 def test_make_kmers(kmer_lengths):
     from kvector import make_kmers
     test = make_kmers(kmer_lengths)
@@ -102,24 +117,12 @@ def test_count_kmers(fasta, kmer_lengths):
     pdt.assert_frame_equal(test, true)
 
 
-def test_score_kmers():
+def test_score_kmers(pwm):
     import kvector
 
     kmers = kvector.make_kmers(3)
 
-    s = ''',A,C,G,T
-0,0.39532879396435,0.105513888686126,0.105513888686126,0.39364342774540506
-1,0.00770456803068082,0.00770456803068082,0.00770456803068082,0.976886297348457
-2,0.976886297348457,0.00770456803068082,0.00770456803068082,0.00770456803068082
-3,0.976886297348457,0.00770456803068082,0.00770456803068082,0.00770456803068082
-4,0.00770456803068082,0.00770456803068082,0.00770456803068082,0.976886297348457
-5,0.00770456803068082,0.00770456803068082,0.00770456803068082,0.976886297348457
-6,0.321131137484576,0.14380369811499302,0.478370946765367,0.0566942181612342
-'''
-    pwm = pd.read_csv(six.StringIO(s), index_col=0)
-
-
-    test = pd.Series(kvector.score_kmers(pwm, map(list, kmers)),
+    test = pd.Series(kvector.score_kmers(pwm, kmers),
                      index=kmers)
     s = '''AAA,0.4421139794502956
 AAC,0.3010679195832866
@@ -189,5 +192,47 @@ TTT,0.48898460903532825
     true = pd.read_csv(six.StringIO(s), index_col=0, squeeze=True, header=None)
     true.name = None
     true.index.name = None
+
+    pdt.assert_series_equal(test, true)
+
+
+def test_score_kmers_kmer_same_length_as_motif(pwm):
+    import kvector
+
+    k = 7
+    kmers = ['A' * k, 'C' * k, 'G' * k, 'T' * k]
+
+    test = pd.Series(
+        kvector.score_kmers(pwm, kmers), index=kmers)
+
+    s = '''AAAAAAA,0.3847637471768403
+CCCCCCC,0.04112006099350329
+GGGGGGG,0.088915382229271
+TTTTTTT,0.48520081057333886
+'''
+    true = pd.read_csv(six.StringIO(s), index_col=0, squeeze=True, header=None)
+    true.index.name = None
+    true.name = None
+
+    pdt.assert_series_equal(test, true)
+
+
+def test_score_kmers_kmer_longer_than_motif(pwm):
+    import kvector
+    k = 10
+
+    kmers = ['A' * k, 'C' * k, 'G' * k, 'T' * k]
+
+    test = pd.Series(
+        kvector.score_kmers(pwm, kmers), index=kmers)
+
+    s = '''AAAAAAAAAA,0.3847637471768403
+CCCCCCCCCC,0.04112006099350329
+GGGGGGGGGG,0.088915382229271
+TTTTTTTTTT,0.48520081057333886
+'''
+    true = pd.read_csv(six.StringIO(s), index_col=0, squeeze=True, header=None)
+    true.index.name = None
+    true.name = None
 
     pdt.assert_series_equal(test, true)
