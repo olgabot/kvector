@@ -1,7 +1,7 @@
 import six
 import pandas as pd
 
-from .kmer import score_kmers, make_kmers, RNA, DNA
+from .kmer import score_kmers, make_kmers, DNA
 
 
 def homer_motif_reader(handle, residues=DNA):
@@ -22,13 +22,13 @@ def homer_motif_reader(handle, residues=DNA):
             if record_id is None:
                 record_id = new_record_id
             if len(record) > 0:
-                pwm = pd.read_table(six.StringIO(record), header=None, names=names)
+                pwm = pd.read_table(six.StringIO(record), header=None,
+                                    names=names)
                 yield record_id, pwm
                 record = ''
                 record_id = new_record_id
         else:
             record += line
-
 
 
 def read_motifs(filename, residues=DNA):

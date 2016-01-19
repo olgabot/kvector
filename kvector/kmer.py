@@ -31,8 +31,9 @@ def score_kmers(pwm, kmers):
         elif k > motif_length:
             starts = range(k - motif_length + 1)
             n_positions = len(starts)
-            score = sum(np.sum(pwm.lookup(range(motif_length),
-                                                kmer[start:(start+motif_length)]))/divisor
+            score = sum(np.sum(
+                pwm.lookup(range(motif_length),
+                           kmer[start:(start+motif_length)]))/divisor
                         for start in starts)/n_positions
         else:
             # k < motif_length
