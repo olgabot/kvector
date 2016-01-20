@@ -60,13 +60,13 @@ M004_0.6_BRUNOL4_ENSG00000101489_Homo_sapiens	M004_0.6_BRUNOL4_ENSG00000101489_H
 6,0.0831008331277267,0.0831008331277267,0.26454785801693803,0.56925047512411
 "'''
     true = pd.read_csv(six.StringIO(s), index_col=0, header=None,
-                       squeeze=True)
+                       squeeze=True, comment='#')
     true = true.map(lambda x: pd.read_csv(six.StringIO(x), index_col=0))
     true.name = None
     true.index.name = None
     pdt.assert_index_equal(test.index, true.index)
 
-    for (index1, df1), (index2, df2) in zip(test.items(), true.items()):
+    for (index1, df1), (index2, df2) in zip(test.iteritems(), true.iteritems()):
         assert index1 == index2
         pdt.assert_frame_equal(df1, df2)
 
@@ -95,6 +95,6 @@ TC,0.29350316617671124,0.1615843741466367,0.27089194560180224,0.2788464741072983
 TG,0.3213837702309091,0.2370358922922856,0.4812690916512954,0.482333693848453
 TT,0.5285394751766753,0.15273636020843642,0.5433688397221682,0.5259148139246123
 '''
-    true = pd.read_csv(six.StringIO(s), index_col=0)
+    true = pd.read_csv(six.StringIO(s), index_col=0, comment='#')
 
     pdt.assert_frame_equal(test, true)
