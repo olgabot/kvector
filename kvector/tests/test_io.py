@@ -61,7 +61,8 @@ M004_0.6_BRUNOL4_ENSG00000101489_Homo_sapiens	M004_0.6_BRUNOL4_ENSG00000101489_H
 "'''
     true = pd.read_csv(six.StringIO(s), index_col=0, header=None,
                        squeeze=True, comment='#')
-    true = true.map(lambda x: pd.read_csv(six.StringIO(x), index_col=0))
+    true = true.map(lambda x: pd.read_csv(six.StringIO(x), index_col=0,
+                                          comment='#'))
     true.name = None
     true.index.name = None
     pdt.assert_index_equal(test.index, true.index)
