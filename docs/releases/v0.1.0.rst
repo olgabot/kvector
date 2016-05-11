@@ -1,19 +1,11 @@
-v0.1.0 (...)
-------------------------
+v0.1.0 First release! (2015-01-19)
+----------------------------------
 
 New features
 ~~~~~~~~~~~~
 
-Plotting functions
-~~~~~~~~~~~~~~~~~~
+- Count kmers in a fasta file
+- Read a HOMER_ motif file and create pandas dataframes from the position-weight matrices (PWMs)
+-
 
-API changes
-~~~~~~~~~~~~~~~~~~
-
-
-Bug fixes
-~~~~~~~~~
-
-Miscellaneous
-~~~~~~~~~~~~~
-
+_HOMER: http://homer.salk.edu/homer/ngs/
