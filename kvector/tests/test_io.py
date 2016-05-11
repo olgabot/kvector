@@ -67,7 +67,8 @@ M004_0.6_BRUNOL4_ENSG00000101489_Homo_sapiens	M004_0.6_BRUNOL4_ENSG00000101489_H
     true.index.name = None
     pdt.assert_index_equal(test.index, true.index)
 
-    for (index1, df1), (index2, df2) in zip(test.iteritems(), true.iteritems()):
+    zipped = zip(test.iteritems(), true.iteritems())
+    for (index1, df1), (index2, df2) in zipped:
         assert index1 == index2
         pdt.assert_frame_equal(df1, df2)
 
