@@ -1,8 +1,15 @@
+from __future__ import print_function
+
 import itertools
 
 from Bio import SeqIO
 import numpy as np
 import pandas as pd
+import pybedtools
+
+
+DIRECTIONS = 'upstream', 'downstream'
+
 
 RNA = 'ACGU'
 DNA = 'ACGT'
@@ -110,3 +117,47 @@ def make_kmers(kmer_lengths, residues=DNA):
         # Kmer length is only one number
         return list(map(lambda x: ''.join(x), itertools.product(
             residues, repeat=kmer_lengths)))
+
+
+def per_interval_kmers(bed, genome_fasta, intersect=None,
+                       kmer_lengths=(4, 5, 6), residues=DNA):
+    """Create a matrix of k-mer observations for each genomic region
+
+    Parameters
+    ----------
+    bed : str or pybedtools.BedTool
+        Either a filepath or pybedtools.BedTool of the genomic intervals whose
+        kmers you want to count
+    genome_fasta : str
+        Path to the genome fasta file
+    intersect : str or pybedtools.BedTool
+        Either a filepath or pybedtools.BedTool of another region location,
+        e.g. conserved elements, that you want to intersect with when
+        searching for k-mers
+
+    Returns
+    -------
+    kmers : pandas.DataFrame
+        A (n_kmers, n_intervals) matrix of the number of DNA words observed in
+        each interval, possibly filtered on only the regions that intersect
+        with the original intervals
+    """
+    if not isinstance(bed, pybedtools.BedTool):
+        bed = pybedtools.BedTool(bed)
+
+    if not isinstance(intersect, pybedtools.BedTool):
+        intersect = pybedtools.BedTool(intersect)
+
+    kmers = []
+
+    for interval in bed:
+        minibed = pybedtools.BedTool([interval])
+        if intersect is not None:
+            minibed = minibed.intersect(intersect)
+        seqs = minibed.sequence(fi=genome_fasta, s=True)
+        k = count_kmers(seqs.seqfn, kmer_lengths=kmer_lengths,
+                        residues=residues).sum()
+        k.name = interval.name
+        kmers.append(k)
+    return pd.concat(kmers)
+\
