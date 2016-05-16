@@ -160,4 +160,3 @@ def per_interval_kmers(bed, genome_fasta, intersect=None,
         k.name = interval.name
         kmers.append(k)
     return pd.concat(kmers, axis=1).T
-
