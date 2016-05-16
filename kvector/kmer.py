@@ -138,7 +138,7 @@ def per_interval_kmers(bed, genome_fasta, intersect=None,
     Returns
     -------
     kmers : pandas.DataFrame
-        A (n_kmers, n_intervals) matrix of the number of DNA words observed in
+        A (n_intervals, n_kmers) matrix of the number of DNA words observed in
         each interval, possibly filtered on only the regions that intersect
         with the original intervals
     """
@@ -159,5 +159,5 @@ def per_interval_kmers(bed, genome_fasta, intersect=None,
                         residues=residues).sum()
         k.name = interval.name
         kmers.append(k)
-    return pd.concat(kmers, axis=1)
+    return pd.concat(kmers, axis=1).T
 \
