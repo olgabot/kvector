@@ -145,7 +145,7 @@ def per_interval_kmers(bed, genome_fasta, intersect=None,
     if not isinstance(bed, pybedtools.BedTool):
         bed = pybedtools.BedTool(bed)
 
-    if not isinstance(intersect, pybedtools.BedTool):
+    if intersect is not None and not isinstance(intersect, pybedtools.BedTool):
         intersect = pybedtools.BedTool(intersect)
 
     kmers = []
