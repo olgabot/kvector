@@ -166,7 +166,7 @@ def per_interval_kmers(bed, genome_fasta, intersect=None,
 
     kmers = []
 
-    counts = joblib.Parallel(n_jobs=4)(
+    counts = joblib.Parallel(n_jobs=threads)(
         joblib.delayed(_count_kmers_single_interval)(interval, genome_fasta,
                                                      intersect, kmer_lengths,
                                                      residues) for interval in
