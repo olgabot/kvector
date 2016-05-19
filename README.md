@@ -23,7 +23,31 @@ To install this code, clone this github repository and use `pip` to install
 Check out [this notebook](https://github.com/olgabot/kvector/blob/master/overview.ipynb)
 for an overview of features with both inputs and outputs (below shows only inputs)
 
-### Count *k*-mers in a fasta file
+### Count k-mers for each line in a `bed` file (multithreaded)
+
+For each interval in a bed file, count the kmers and return a
+(n_intervals, n_kmers) matrix of the k-mer counts of each region.
+
+```python
+kmers = kvector.per_interval_kmers(bedfile, genome_fasta, threads=threads)
+csv = bedfile.replace('.bed', '_kmers.csv')
+kmers.to_csv(csv)
+```
+
+### Count k-mers for each line in a `bed` file, intersected (multithreaded)
+
+For each interval in a bed file, intersect it with another (`other`) bed file (e.g. only
+conserved regions of introns) and count k-mers for the intersected region. Returns
+a (n_intervals, n_kmers) matrix of the k-mer counts of each line in the bed file,
+intersected with the `other` bed.
+
+```python
+kmers = kvector.per_interval_kmers(bedfile, genome_fasta, other, threads=threads)
+csv = bedfile.replace('.bed', '_kmers.csv')
+kmers.to_csv(csv)
+```
+
+### Count all *k*-mers in a fasta file
 
 ```python
 kmer_vector = kvector.count_kmers('kvector/tests/data/example.fasta', kmer_lengths=(3, 4))
