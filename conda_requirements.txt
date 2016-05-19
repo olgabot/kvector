@@ -4,3 +4,4 @@ flake8
 pandas
 biopython
 pybedtools
+joblib
