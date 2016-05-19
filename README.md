@@ -29,7 +29,8 @@ For each interval in a bed file, count the kmers and return a
 (n_intervals, n_kmers) matrix of the k-mer counts of each region.
 
 ```python
-kmers = kvector.per_interval_kmers(bedfile, genome_fasta, threads=threads)
+kmers = kvector.per_interval_kmers(bedfile, genome_fasta, threads=threads,
+    kmer_lengths=(4, 5, 6), residues='ACGT')
 csv = bedfile.replace('.bed', '_kmers.csv')
 kmers.to_csv(csv)
 ```
@@ -42,7 +43,8 @@ a (n_intervals, n_kmers) matrix of the k-mer counts of each line in the bed file
 intersected with the `other` bed.
 
 ```python
-kmers = kvector.per_interval_kmers(bedfile, genome_fasta, other, threads=threads)
+kmers = kvector.per_interval_kmers(bedfile, genome_fasta, other, threads=threads,
+    kmer_lengths=(4, 5, 6))
 csv = bedfile.replace('.bed', '_kmers.csv')
 kmers.to_csv(csv)
 ```
