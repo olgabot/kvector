@@ -3,10 +3,10 @@ from __future__ import print_function
 import itertools
 
 from Bio import SeqIO
+import joblib
 import numpy as np
 import pandas as pd
 import pybedtools
-
 
 DIRECTIONS = 'upstream', 'downstream'
 
@@ -119,8 +119,21 @@ def make_kmers(kmer_lengths, residues=DNA):
             residues, repeat=kmer_lengths)))
 
 
+def _count_kmers_single_interval(interval, genome_fasta, intersect,
+                                 kmer_lengths, residues):
+    """Internal function for multithreaded counting of kmers"""
+    minibed = pybedtools.BedTool([interval])
+    if intersect is not None:
+        minibed = minibed.intersect(intersect)
+    seqs = minibed.sequence(fi=genome_fasta, s=True)
+    k = count_kmers(seqs.seqfn, kmer_lengths=kmer_lengths,
+                    residues=residues).sum()
+    k.name = interval.name
+    return k
+
+
 def per_interval_kmers(bed, genome_fasta, intersect=None,
-                       kmer_lengths=(4, 5, 6), residues=DNA):
+                       kmer_lengths=(4, 5, 6), residues=DNA, threads=-1):
     """Create a matrix of k-mer observations for each genomic region
 
     Parameters
@@ -134,6 +147,9 @@ def per_interval_kmers(bed, genome_fasta, intersect=None,
         Either a filepath or pybedtools.BedTool of another region location,
         e.g. conserved elements, that you want to intersect with when
         searching for k-mers
+    threads : int
+        Number of threads to use for multithreading of the job. Default is -1,
+        which takes the maximum number of threads available. Usees joblib.
 
     Returns
     -------
@@ -150,13 +166,10 @@ def per_interval_kmers(bed, genome_fasta, intersect=None,
 
     kmers = []
 
-    for interval in bed:
-        minibed = pybedtools.BedTool([interval])
-        if intersect is not None:
-            minibed = minibed.intersect(intersect)
-        seqs = minibed.sequence(fi=genome_fasta, s=True)
-        k = count_kmers(seqs.seqfn, kmer_lengths=kmer_lengths,
-                        residues=residues).sum()
-        k.name = interval.name
-        kmers.append(k)
-    return pd.concat(kmers, axis=1).T
+    counts = joblib.Parallel(n_jobs=4)(
+        joblib.delayed(_count_kmers_single_interval)(interval, genome_fasta,
+                                                     intersect, kmer_lengths,
+                                                     residues) for interval in
+        bed)
+    kmers = pd.concat(counts, axis=1).T
+    return kmers
