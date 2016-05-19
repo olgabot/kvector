@@ -172,4 +172,5 @@ def per_interval_kmers(bed, genome_fasta, intersect=None,
                                                      residues) for interval in
         bed)
     kmers = pd.concat(counts, axis=1).T
+    kmers = kmers.astype(int)
     return kmers
