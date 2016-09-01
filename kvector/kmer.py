@@ -164,8 +164,6 @@ def per_interval_kmers(bed, genome_fasta, intersect=None,
     if intersect is not None and not isinstance(intersect, pybedtools.BedTool):
         intersect = pybedtools.BedTool(intersect)
 
-    kmers = []
-
     counts = joblib.Parallel(n_jobs=threads)(
         joblib.delayed(_count_kmers_single_interval)(
             interval, genome_fasta, intersect, kmer_lengths, residues)
