@@ -15,6 +15,16 @@ RNA = 'ACGU'
 DNA = 'ACGT'
 
 
+def interval_to_str_name(interval):
+    """Convert a pybedtools interval to a string representing its position"""
+    str_name = '{chrom}:{start}-{stop}'.format(
+        chrom=interval.chrom, start=interval.start, stop=interval.stop)
+
+    if interval.strand != '.':
+        str_name += '({})'.format(interval.strand)
+    return str_name
+
+
 def score_kmers(pwm, kmers):
     """Generator to score kmers given a position-weight matrix
 
@@ -80,7 +90,6 @@ def count_kmers(filename, kmer_lengths=(4, 5, 6), format='fasta',
 
     with open(filename) as f:
         records = list(SeqIO.parse(f, format))
-#         records = [x.reverse_complement() if x.id[-1]]
     kmer_matrix = pd.DataFrame(0, columns=kmers, dtype=int,
                                index=range(len(records)))
 
@@ -122,6 +131,7 @@ def make_kmers(kmer_lengths, residues=DNA):
 def _count_kmers_single_interval(interval, genome_fasta, intersect,
                                  kmer_lengths, residues):
     """Internal function for multithreaded counting of kmers"""
+    # print('interval!', interval.chrom, interval.start, interval.stop)
     minibed = pybedtools.BedTool([interval])
     if intersect is not None:
         minibed = minibed.intersect(intersect)
@@ -164,10 +174,19 @@ def per_interval_kmers(bed, genome_fasta, intersect=None,
     if intersect is not None and not isinstance(intersect, pybedtools.BedTool):
         intersect = pybedtools.BedTool(intersect)
 
-    counts = joblib.Parallel(n_jobs=threads)(
-        joblib.delayed(_count_kmers_single_interval)(
-            interval, genome_fasta, intersect, kmer_lengths, residues)
-        for interval in bed)
+    if threads != 0:
+        counts = joblib.Parallel(n_jobs=threads)(
+            joblib.delayed(_count_kmers_single_interval)(
+                interval, genome_fasta, intersect, kmer_lengths, residues)
+            for interval in bed)
+    else:
+        counts = []
+        for interval in bed:
+            counts.append(_count_kmers_single_interval(
+                interval, genome_fasta, intersect, kmer_lengths, residues))
     kmers = pd.concat(counts, axis=1).T
+    index = [name if name != '.' else interval_to_str_name(interval)
+             for name, interval in zip(kmers.index, bed)]
+    kmers.index = index
     kmers = kmers.astype(int)
     return kmers
