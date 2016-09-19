@@ -1,26 +1,26 @@
 # kvector
 
-[![](https://img.shields.io/travis/olgabot/kvector.svg)](https://travis-ci.org/olgabot/kvector)[![](https://img.shields.io/pypi/v/kvector.svg)](https://pypi.python.org/pypi/kvector)
+[![](https://img.shields.io/travis/YeoLab/kvector.svg)](https://travis-ci.org/YeoLab/kvector)[![](https://img.shields.io/pypi/v/kvector.svg)](https://pypi.python.org/pypi/kvector)
 
 ## What is `kvector`?
 
 kvector is a small utility for converting motifs to kmer vectors to compare motifs of different lengths
 
 * Free software: BSD license
-* Documentation: https://olgabot.github.io/kvector
+* Documentation: https://YeoLab.github.io/kvector
 
 ## Installation
 
 To install this code, clone this github repository and use `pip` to install
 
-    git clone git@github.com:olgabot/kvector
+    git clone git@github.com:YeoLab/kvector
     cd kvector
     pip install .  # The "." means "install *this*, the folder where I am now"
 
 
 ## Features
 
-Check out [this notebook](https://github.com/olgabot/kvector/blob/master/overview.ipynb)
+Check out [this notebook](https://github.com/YeoLab/kvector/blob/master/overview.ipynb)
 for an overview of features with both inputs and outputs (below shows only inputs)
 
 ### Count k-mers for each line in a `bed` file (multithreaded)
