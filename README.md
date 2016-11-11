@@ -13,7 +13,7 @@ kvector is a small utility for converting motifs to kmer vectors to compare moti
 
 To install this code, clone this github repository and use `pip` to install
 
-    git clone git@github.com:olgabot/kvector
+    git clone https://github.com/olgabot/kvector.git
     cd kvector
     pip install .  # The "." means "install *this*, the folder where I am now"
 
