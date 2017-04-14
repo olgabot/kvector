@@ -6,8 +6,8 @@ import click
 import kvector
 
 @click.command()
-@click.argument('bed')
-@click.argument('fasta')
+@click.argument('bed', type=click.Path(dir_okay=False))
+@click.argument('fasta', type=click.Path(dir_okay=False))
 @click.option('--intersect',
               help='Bed file of other regions, e.g. conserved elements, that '
                    'you want to intersect when searching for k-mers.')
@@ -37,12 +37,16 @@ def cli(bed, fasta, intersect, kmer_lengths, residues, threads):
         indexed (usually has a `.fai` file in the same directory, created
         using `faidx`).
     """
+    # click.echo('Counting k-mers of lengths {kmer_lengths} in the intervals '
+    #            '{bed} using the genome fasta {fasta}'.format(
+    #     kmer_lengths=kmer_lengths, bed=bed, fasta=fasta))
+
     kmer_lengths = map(int, kmer_lengths.split(','))
 
     kmers = kvector.per_interval_kmers(bed, fasta, intersect=intersect,
                                        kmer_lengths=kmer_lengths,
                                        residues=residues, threads=threads)
-    print(kmers.to_csv())
+    click.echo(kmers.to_csv())
 
 
 if __name__ == '__main__':
