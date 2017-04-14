@@ -26,8 +26,8 @@ script:
 - make coverage
 - make lint
 after_script:
-- pip install coverage
-- coveralls
+- pip install codecov
+- codecov
 deploy:
   provider: pypi
   on:
