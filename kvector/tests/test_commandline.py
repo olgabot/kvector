@@ -53,4 +53,4 @@ def test_cli_with_arguments(intervals_bed, genome_fasta, interval_kmers_csv):
 
     with open(interval_kmers_csv) as f:
         true_output = f.read()
-    assert test.output == true_output
+    assert test.output.strip() == true_output.strip()
