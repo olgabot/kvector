@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+
 import itertools
 
 from Bio import SeqIO
@@ -142,7 +143,7 @@ def _count_kmers_single_interval(interval, genome_fasta, intersect,
     return k
 
 
-def per_interval_kmers(bed, genome_fasta, intersect=None,
+def per_interval_kmers(bed, fasta, intersect=None,
                        kmer_lengths=(4, 5, 6), residues=DNA, threads=-1):
     """Create a matrix of k-mer observations for each genomic region
 
@@ -151,7 +152,7 @@ def per_interval_kmers(bed, genome_fasta, intersect=None,
     bed : str or pybedtools.BedTool
         Either a filepath or pybedtools.BedTool of the genomic intervals whose
         kmers you want to count
-    genome_fasta : str
+    fasta : str
         Path to the genome fasta file
     intersect : str or pybedtools.BedTool
         Either a filepath or pybedtools.BedTool of another region location,
@@ -177,13 +178,13 @@ def per_interval_kmers(bed, genome_fasta, intersect=None,
     if threads != 0:
         counts = joblib.Parallel(n_jobs=threads)(
             joblib.delayed(_count_kmers_single_interval)(
-                interval, genome_fasta, intersect, kmer_lengths, residues)
+                interval, fasta, intersect, kmer_lengths, residues)
             for interval in bed)
     else:
         counts = []
         for interval in bed:
             counts.append(_count_kmers_single_interval(
-                interval, genome_fasta, intersect, kmer_lengths, residues))
+                interval, fasta, intersect, kmer_lengths, residues))
     kmers = pd.concat(counts, axis=1).T
     index = [name if name != '.' else interval_to_str_name(interval)
              for name, interval in zip(kmers.index, bed)]
