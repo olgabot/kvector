@@ -37,9 +37,6 @@ def cli(bed, fasta, intersect, kmer_lengths, residues, threads):
         indexed (usually has a `.fai` file in the same directory, created
         using `faidx`).
     """
-    # click.echo('Counting k-mers of lengths {kmer_lengths} in the intervals '
-    #            '{bed} using the genome fasta {fasta}'.format(
-    #     kmer_lengths=kmer_lengths, bed=bed, fasta=fasta))
 
     kmer_lengths = map(int, kmer_lengths.split(','))
 
