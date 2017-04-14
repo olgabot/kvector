@@ -1,26 +1,26 @@
 # kvector
 
-[![](https://img.shields.io/travis/YeoLab/kvector.svg)](https://travis-ci.org/YeoLab/kvector)[![](https://img.shields.io/pypi/v/kvector.svg)](https://pypi.python.org/pypi/kvector)
+[![](https://img.shields.io/travis/olgabot/kvector.svg)](https://travis-ci.org/olgabot/kvector)[![](https://img.shields.io/pypi/v/kvector.svg)](https://pypi.python.org/pypi/kvector)
 
 ## What is `kvector`?
 
 kvector is a small utility for converting motifs to kmer vectors to compare motifs of different lengths
 
 * Free software: BSD license
-* Documentation: https://YeoLab.github.io/kvector
+* Documentation: https://olgabot.github.io/kvector
 
 ## Installation
 
 To install this code, clone this github repository and use `pip` to install
 
-    git clone git@github.com:YeoLab/kvector
+    git clone git@github.com:olgabot/kvector
     cd kvector
     pip install .  # The "." means "install *this*, the folder where I am now"
 
 
 ## Features
 
-Check out [this notebook](https://github.com/YeoLab/kvector/blob/master/overview.ipynb)
+Check out [this notebook](https://github.com/olgabot/kvector/blob/master/overview.ipynb)
 for an overview of features with both inputs and outputs (below shows only inputs)
 
 ### Count k-mers for each line in a `bed` file (multithreaded)
@@ -31,6 +31,11 @@ For each interval in a bed file, count the kmers and return a
 ```python
 kmers = kvector.per_interval_kmers(bedfile, genome_fasta, threads=threads,
     kmer_lengths=(4, 5, 6), residues='ACGT')
+
+# This is a pandas DataFrame so you can look at the top ("head") of it
+kmers.head()
+
+# Save the
 csv = bedfile.replace('.bed', '_kmers.csv')
 kmers.to_csv(csv)
 ```
@@ -80,4 +85,23 @@ just your laptop.
 ```python
 motif_kmer_vectors = kvector.motifs_to_kmer_vectors(motifs, residues='ACGT',
     kmer_lengths=(4, 5, 6))
+```
+
+## How to run the tests
+
+### Vanilla test running
+
+To run the tests and nothing else, type:
+
+```
+py.test
+```
+
+### Tests with coverage
+
+To calculate how many lines of code are covered by tests, use the `Makefile`
+command:
+
+```
+make coverage
 ```
