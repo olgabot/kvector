@@ -22,6 +22,7 @@ import kvector
                    ' of a multithreaded job. Default is -1, which uses the '
                    'maximum number of threads available, via the "joblib" '
                    'module.')
+@click.version_option(version=kvector.__version__)
 def cli(bed, fasta, intersect, kmer_lengths, residues, threads):
     """Counts k-mers in the bed intervals and writes a csv to stdout
 
