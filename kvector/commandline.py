@@ -38,7 +38,7 @@ def cli(bed, fasta, intersect, kmer_lengths, residues, threads):
         using `faidx`).
     """
 
-    kmer_lengths = map(int, kmer_lengths.split(','))
+    kmer_lengths = tuple(map(int, kmer_lengths.split(',')))
 
     kmers = kvector.per_interval_kmers(bed, fasta, intersect=intersect,
                                        kmer_lengths=kmer_lengths,
