@@ -262,51 +262,46 @@ TTTTTTTTTT,0.48520081057333886
     pdt.assert_series_equal(test, true)
 
 
-def test_per_interval_kmers(intervals_bed, genome_fasta, data_folder):
+def test_per_interval_kmers(intervals_bed, genome_fasta,
+                            interval_kmers_csv):
     import kvector
 
     test = kvector.per_interval_kmers(intervals_bed, genome_fasta)
 
-    csv = os.path.join(data_folder, 'intervals_kmers.csv')
-    true = pd.read_csv(csv, index_col=0)
+    true = pd.read_csv(interval_kmers_csv, index_col=0)
 
     pdt.assert_frame_equal(test, true)
 
 
 def test_per_interval_kmers_unnamed_intervals(other_bed, genome_fasta,
-                                              data_folder):
+                                              other_kmers_csv):
     import kvector
 
     test = kvector.per_interval_kmers(other_bed, genome_fasta)
 
-    csv = os.path.join(data_folder, 'other_kmers.csv')
-    true = pd.read_csv(csv, index_col=0)
+    true = pd.read_csv(other_kmers_csv, index_col=0)
 
     pdt.assert_frame_equal(test, true)
 
 
-def test_per_interval_kmers_intersect_serial(intervals_bed, genome_fasta,
-                                      data_folder, other_bed):
+def test_per_interval_kmers_intersect_serial(
+        intervals_bed, genome_fasta, other_bed, intervals_intersect_other_kmers_csv):
     import kvector
 
     test = kvector.per_interval_kmers(intervals_bed, genome_fasta,
                                       intersect=other_bed, threads=0)
 
-    csv = os.path.join(data_folder,
-                       'intervals_intersect_other_kmers.csv')
-    true = pd.read_csv(csv, index_col=0)
+    true = pd.read_csv(intervals_intersect_other_kmers_csv, index_col=0)
 
     pdt.assert_frame_equal(test, true)
 
-def test_per_interval_kmers_intersect_parallelized(intervals_bed, genome_fasta,
-                                      data_folder, other_bed):
+def test_per_interval_kmers_intersect_parallelized(
+        intervals_bed, genome_fasta, other_bed, intervals_intersect_other_kmers_csv):
     import kvector
 
     test = kvector.per_interval_kmers(intervals_bed, genome_fasta,
                                       intersect=other_bed, threads=-1)
 
-    csv = os.path.join(data_folder,
-                       'intervals_intersect_other_kmers.csv')
-    true = pd.read_csv(csv, index_col=0)
+    true = pd.read_csv(intervals_intersect_other_kmers_csv, index_col=0)
 
     pdt.assert_frame_equal(test, true)

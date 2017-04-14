@@ -25,3 +25,18 @@ def other_bed(data_folder):
 @pytest.fixture
 def genome_fasta(data_folder):
     return os.path.join(data_folder, 'chromosome.fasta')
+
+
+@pytest.fixture
+def interval_kmers_csv(data_folder):
+    return os.path.join(data_folder, 'intervals_kmers.csv')
+
+
+@pytest.fixture
+def other_kmers_csv(data_folder):
+    return os.path.join(data_folder, 'other_kmers.csv')
+
+
+@pytest.fixture
+def intervals_intersect_other_kmers_csv(data_folder):
+    return os.path.join(data_folder, 'intervals_intersect_other_kmers.csv')
