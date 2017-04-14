@@ -23,7 +23,7 @@ test_requirements = [
 
 setup(
     name='kvector',
-    version='0.1.0',
+    version='1.0.0',
     description="kvector is a small utility for converting motifs to kmer vectors to compare motifs of different lengths",
     long_description=readme + '\n\n' + history,
     author="Olga Botvinnik",
@@ -52,5 +52,8 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
     test_suite='tests',
-    tests_require=test_requirements
+    tests_require=test_requirements,
+    entry_points={'console_scripts': [
+            'kvector = outrigger.commandline:cli'
+        ]}
 )
