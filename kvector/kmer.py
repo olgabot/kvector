@@ -158,6 +158,8 @@ def per_interval_kmers(bed, fasta, intersect=None,
         Either a filepath or pybedtools.BedTool of another region location,
         e.g. conserved elements, that you want to intersect with when
         searching for k-mers
+    kmer_lengths : int or tuple of ints
+        Kmer lengths to use for counting DNA words
     threads : int
         Number of threads to use for multithreading of the job. Default is -1,
         which takes the maximum number of threads available. Usees joblib.
