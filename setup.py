@@ -54,6 +54,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     entry_points={'console_scripts': [
-            'kvector = outrigger.commandline:cli'
+            'kvector = kvector.commandline:cli'
         ]}
 )
