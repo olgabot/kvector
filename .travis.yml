@@ -33,9 +33,12 @@ script:
 - make coverage
 - make lint
 
-after_script:
-- pip install coverage
-- coveralls
+after_success:
+  - which -a curl
+  - set -o pipefail
+  - /usr/bin/curl --progress-bar https://codecov.io/bash | bash
+  - echo $?
+  - set +o pipefail
 
 deploy:
   provider: pypi
