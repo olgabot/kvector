@@ -88,7 +88,8 @@ def test_make_kmers(kmer_lengths):
                 'TTCT', 'TTGA', 'TTGC', 'TTGG', 'TTGT', 'TTTA', 'TTTC', 'TTTG',
                 'TTTT']
 
-    pdt.assert_equal(test, true)
+    for test_item, true_item in zip(test, true):
+        assert test_item == true_item
 
 
 def test_count_kmers(fasta, kmer_lengths):
