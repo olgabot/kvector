@@ -17,10 +17,8 @@ before_install:
 - conda info -a
 
 install:
-- conda create -n testenv --yes python=$TRAVIS_PYTHON_VERSION pip
-- source activate testenv
-- conda install --yes --channel bioconda --file conda_requirements.txt
-- pip install -r requirements.txt
+- conda env create --file testing/environment_no_python.yml python=$TRAVIS_PYTHON_VERSION
+- source activate kvector-env
 - pip install .
 
 before_script:

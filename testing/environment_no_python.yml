@@ -1,0 +1,52 @@
+name: kvector-env
+channels:
+- bioconda
+- r
+- defaults
+- conda-forge
+dependencies:
+- bcftools
+- biopython>=1.69
+- htslib
+- joblib
+- mmtf-python
+- pybedtools
+- pycodestyle
+- pysam
+- python-dateutil
+- samtools
+- bzip2
+- coverage
+- curl
+- flake8
+- freetype
+- jbig
+- jpeg
+- libpng
+- libtiff
+- mccabe
+- mkl
+- msgpack-python
+- numpy
+- olefile
+- openssl
+- pandas>=0.17.0
+- pillow
+- pip
+- py
+- pyflakes
+- pytest
+- pytz
+- readline
+- reportlab
+- setuptools
+- six
+- sqlite
+- tk
+- wheel
+- xz
+- zlib
+- pip:
+  - python-coveralls
+  - pyyaml
+  - requests
