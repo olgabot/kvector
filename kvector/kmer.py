@@ -88,7 +88,11 @@ def count_kmers(filename, kmer_lengths=(4, 5, 6), format='fasta',
         for k in kmer_lengths:
             for i in range(len(record) - k + 1):
                 kmer = str(record[i:(i+k)].seq).upper()
-                kmer_matrix.loc[col, kmer] += 1
+                try:
+                    kmer_matrix.loc[col, kmer] += 1
+                except KeyError:
+                    print("Skipped {} because it contains an unknown "
+                          "nucleotide".format(kmer))
     return kmer_matrix
 
 
