@@ -49,27 +49,55 @@ csv = bedfile.replace('.bed', '_kmers.csv')
 kmers.to_csv(csv)
 ```
 
-### Count all *k*-mers in a fasta file
+### Count all *k*-mers in a `.fasta` file
 
 ```python
 kmer_vector = kvector.count_kmers('kvector/tests/data/example.fasta', kmer_lengths=(3, 4))
 kmer_vector.head()
 ```
 
+In a Jupyter notebook, this outputs:
+
+![Output of reading kmers from a fasta file as a pandas dataframe](images/kmer_vector_dataframe.png)
+
+
+Since this is a pandas dataframe, you can do convenient things like get
+the mean and standard deviation of the number of observations of each kmer across all
+entries in the `.fasta` file.
+
+![Pandas series showing the mean number of observations of each k-mer](images/kmer_vector_mean.png)
+
+Standard deviation:
+
+![Pandas series showing the standard deviation of the number of observations of each k-mer](images/kmer_vector_std.png)
+
+
 ### Read HOMER motif file
+
+Given a HOMER motif file, read each motif as a position weight matrix
+and create a Series for each ID mapping to a mini dataframe of the motif.
 
 ```python
 motifs = kvector.read_motifs("kvector/tests/example.motifs", residues='ACGT')
+motifs.head()
 ```
 
-The output is a pandas Series of the motif ids from the file, mapped to a
-dataframe of the position-weight matrix of the motif.
+Here's what the output looks like in a Jupyter notebook.
+
+![Pandas series of each motif](images/motifs_series.png)
+
+This is a series containing mini-dataframes for each motif. You can can
+access individual motifs with the usual pandas indexing:
+
+![Indexing the motifs series with pandas indexing](images/motifs_series_indexing.png)
 
 ### Create metadata matrix from the ID lines of the motifs
 
 ```python
 metadata = kvector.create_metadata(motifs)
 ```
+
+
 
 ### Transform the motif PWM to a kmer vector
 
