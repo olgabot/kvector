@@ -91,15 +91,14 @@ access individual motifs with the usual pandas indexing:
 
 ![Indexing the motifs series with pandas indexing](images/motifs_series_indexing.png)
 
-### Create metadata matrix from the ID lines of the motifs
-
-```python
-metadata = kvector.create_metadata(motifs)
-```
-
-
 
 ### Transform the motif PWM to a kmer vector
+
+Instead of representing a motif as a position-specific weight matrix which
+would require aligning motifs to compare them, you can convert them to a vector
+of kmers, where the value for each kmer is the score of the kmer in that motif.
+​ Citation:
+[Xu and Su, _PLoS Computational Biology_ (2010)](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0008797)
 
 Keep in mind that on most computers, only kmers up to about 8 (4^8 = 65,536)
 can be stored in memory. You may want to do this on a supercomputer and not
@@ -108,4 +107,9 @@ just your laptop.
 ```python
 motif_kmer_vectors = kvector.motifs_to_kmer_vectors(motifs, residues='ACGT',
     kmer_lengths=(4, 5, 6))
+motif_kmer_vectors.head()
 ```
+
+The example output in a Jupyter notebook is below.
+
+![Motifs as K-mer vectors](images/motifs_as_kmer_vectors.png)
