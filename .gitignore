@@ -50,3 +50,10 @@ docs/_build
 
 # Emacs
 *~
+
+# Only save README.md
+
+# Other unused files
+.cache/
+kvector/__pycache__/
+kvector/tests/__pycache__/
