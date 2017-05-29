@@ -1,0 +1,8 @@
+v1.0.0 (2017-05-28)
+-------------------
+
+New features
+~~~~~~~~~~~~
+
+- Elegantly ignore ``N``s in fasta files (Thanks @ecwheele!)
+- Add images to README
